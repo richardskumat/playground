@@ -25,12 +25,9 @@ build_image:
   stage: build
   script:
     - echo $CI_REGISTRY "$CI_REGISTRY_USER" $CI_PROJECT_NAME $CI_COMMIT_SHA
-    - docker build -t $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest -t $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA .
-    - docker push $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest
-    - docker push $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA
-
-test_image:
-  stage: test
-  script:
-    - docker run $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest
-    - docker run $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA
+    - docker build -t registry.gitlab.com/richardskumat/playground:$CI_COMMIT_SHA -t registry.gitlab.com/richardskumat/playground:latest .
+    - docker push registry.gitlab.com/richardskumat/playground:latest
+    - docker push registry.gitlab.com/richardskumat/playground:$CI_COMMIT_SHA
+    #- docker build -t $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest -t $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA .
+    #- docker push $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest
+    #- docker push $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA
