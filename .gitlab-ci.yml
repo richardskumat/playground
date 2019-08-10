@@ -11,10 +11,10 @@ services:
   - docker:dind
 
 before_script:
-  - env
+  #- env
   - docker info
-  - echo "$CI_REGISTRY_USER" "$CI_REGISTRY"
-  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+  - echo "$GITLAB_USER_LOGIN" "$CI_REGISTRY"
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$GITLAB_USER_LOGIN" "$CI_REGISTRY" --password-stdin
 
 
 
@@ -24,10 +24,10 @@ stages:
 build_image:
   stage: build
   script:
-    - echo $CI_REGISTRY "$CI_REGISTRY_USER" $CI_PROJECT_NAME $CI_COMMIT_SHA
-    - docker build -t registry.gitlab.com/richardskumat/playground:$CI_COMMIT_SHA -t registry.gitlab.com/richardskumat/playground:latest .
-    - docker push registry.gitlab.com/richardskumat/playground:latest
-    - docker push registry.gitlab.com/richardskumat/playground:$CI_COMMIT_SHA
-    #- docker build -t $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest -t $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA .
-    #- docker push $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:latest
-    #- docker push $CI_REGISTRY/$CI_REGISTRY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA
+    - echo $CI_REGISTRY "$GITLAB_USER_LOGIN" $CI_PROJECT_NAME $CI_COMMIT_SHA
+    #- docker build -t registry.gitlab.com/richardskumat/playground:$CI_COMMIT_SHA -t registry.gitlab.com/richardskumat/playground:latest .
+    #- docker push registry.gitlab.com/richardskumat/playground:latest
+    #- docker push registry.gitlab.com/richardskumat/playground:$CI_COMMIT_SHA
+    - docker build -t $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest -t $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest
+    - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME:$CI_COMMIT_SHA
