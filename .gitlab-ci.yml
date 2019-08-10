@@ -13,8 +13,8 @@ services:
 before_script:
   #- env
   - docker info
-  - echo "$GITLAB_USER_LOGIN" "$CI_REGISTRY"
-  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$GITLAB_USER_LOGIN" "$CI_REGISTRY" --password-stdin
+  - echo "$CI_REGISTRY_USER" "$CI_REGISTRY"
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
 
 
 
