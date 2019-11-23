@@ -1,2 +1,2 @@
-FROM debian:10
+FROM debian:buster-slim
 CMD echo hi
