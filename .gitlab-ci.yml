@@ -12,7 +12,7 @@ before_script:
   #- env
   - echo "$CI_REGISTRY_USER" "$CI_REGISTRY" "$CI_REGISTRY_IMAGE"
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
-  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  #- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
 stages:
   - build
@@ -26,16 +26,16 @@ build_image_amd64:
     - docker push $CI_REGISTRY_IMAGE:latest
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
-build_image_arm64v8:
-  stage: build
-  script:
-    - echo $CI_REGISTRY "$CI_PROJECT_NAMESPACE" $CI_PROJECT_NAME $CI_COMMIT_SHA
-    - docker build -f Dockerfile-arm64v8 -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:latest
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+#build_image_arm64v8:
+#  stage: build
+#  script:
+#    - echo $CI_REGISTRY "$CI_PROJECT_NAMESPACE" $CI_PROJECT_NAME $CI_COMMIT_SHA
+#    - docker build -f Dockerfile-arm64v8 -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+#    - docker push $CI_REGISTRY_IMAGE:latest
+#    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
 dockerfile_lint:
   stage: df_lint
   script:
     - docker run --rm -i hadolint/hadolint < Dockerfile || true
-    - docker run --rm -i hadolint/hadolint < Dockerfile-arm64v8
+#    - docker run --rm -i hadolint/hadolint < Dockerfile-arm64v8
