@@ -37,4 +37,5 @@ build_image_arm64v8:
 dockerfile_lint:
   stage: df_lint
   script:
-    - docker run --rm -i hadolint/hadolint < Dockerfile
+    - docker run --rm -i hadolint/hadolint < Dockerfile || true
+    - docker run --rm -i hadolint/hadolint < Dockerfile-arm64v8
