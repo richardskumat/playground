@@ -2,8 +2,13 @@
 - hosts: local
   # remote_user:
   become: no
+  gather_facts: true
 
   tasks:
+
+    - name: setup task for debugging
+      setup:
+      register: setupstdout
 
     - name: debug from setup
       debug: msg="{{ setupstdout }}"
