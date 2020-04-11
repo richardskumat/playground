@@ -1,0 +1,9 @@
+---
+- hosts: local
+  # remote_user:
+  become: no
+
+  tasks:
+
+    - name: debug from setup
+      debug: msg="{{ setupstdout }}"

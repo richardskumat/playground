@@ -1,0 +1,39 @@
+image: docker:stable
+
+variables:
+  # https://about.gitlab.com/blog/2019/07/31/docker-in-docker-with-docker-19-dot-03/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:dind
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+stages:
+  - build
+
+build_raspbian:
+  stage: build
+  image: qwe1/debdocker:latest
+  script:
+    # https://raspberrypi.stackexchange.com/questions/78232/install-base-raspbian-from-repository-not-using-an-image
+    - apt-get update && apt-get install wget binfmt-support qemu qemu-user-static debootstrap -y
+    - wget http://archive.raspbian.org/raspbian.public.key -O - | apt-key add -q
+    - qemu-debootstrap --keyring=/etc/apt/trusted.gpg --arch armhf --variant=minbase buster buster http://mirrordirector.raspbian.org/raspbian/
+    # https://docs.docker.com/develop/develop-images/baseimages/
+    - tar -C buster -c . | docker import - buster
+    - docker run --rm buster cat /etc/os-release
+    - docker run --rm buster cat /etc/apt/sources.list
+    - docker images
+    - ls -lah
+
+#build_image_arm64v8:
+#  stage: build
+#  script:
+#    - echo $CI_REGISTRY "$CI_PROJECT_NAMESPACE" $CI_PROJECT_NAME $CI_COMMIT_SHA
+#    - docker build -f Dockerfile-arm64v8 -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+#    - docker push $CI_REGISTRY_IMAGE:latest
+#    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
