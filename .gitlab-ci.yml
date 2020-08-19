@@ -26,6 +26,6 @@ stages:
 build:
   stage: build
   script:
-    - docker buildx build --tag $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 .
+    - docker buildx build --push --tag qwe1/playground:latest  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 .
     - docker images
-    - docker run --rm $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA bash --version
+    - docker run --rm qwe1/playground:latest bash --version
