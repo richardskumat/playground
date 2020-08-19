@@ -21,6 +21,7 @@ build:
   stage: build
   script:
     # https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+    - export DOCKER_CLI_EXPERIMENTAL=enabled
     - docker buildx build --tag $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA  --platform linux/amd64,linux/arm/v7,linux/arm64 .
     - docker images
     - docker run --rm $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA bash --version
