@@ -1,0 +1,13 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+stages:
+  - test
+
+test:
+  stage: test
+  image: qwe1/dind-ansible-molecule:root
+  script:
+    - id
+    - ansible-playbook -i hosts pb.yml
