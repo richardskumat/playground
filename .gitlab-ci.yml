@@ -13,6 +13,8 @@ before_script:
   - wget -O $HOME/.docker/cli-plugins/docker-buildx $BUILDX_URL
   - chmod a+x $HOME/.docker/cli-plugins/docker-buildx
   - docker buildx version
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  - "echo -e '{\n  \"experimental\": \"enabled\"\n}' | tee $HOME/.docker/config.json"
 
 stages:
   - build
@@ -21,7 +23,9 @@ build:
   stage: build
   script:
     - docker context create pg
-    - docker buildx create pg --platform=linux/amd64,linux/386,linux/arm/v7,linux/arm64
+    - docker buildx create --use --driver docker-container --name pg --platform=linux/amd64,linux/386,linux/arm/v7,linux/arm64
+    - docker buildx inspect --bootstrap pg
+    - docker buildx ls
     - docker buildx build --tag $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 .
     - docker images
     - docker run --rm $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA bash --version
