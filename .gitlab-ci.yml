@@ -16,7 +16,6 @@ stages:
 before_script:
   - docker info
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  - env
 
 build:
   stage: build
