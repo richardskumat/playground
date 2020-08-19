@@ -20,6 +20,7 @@ stages:
 build:
   stage: build
   script:
+    - docker context create pg
     - docker buildx create --use --driver docker-container --name pg --platform=linux/amd64,linux/386,linux/arm/v7,linux/arm64
     - docker buildx build --tag $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 .
     - docker images
