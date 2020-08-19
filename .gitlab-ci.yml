@@ -1,19 +1,18 @@
-dind:
-  image: docker:19.03
-  services:
-    - name: docker:19.03-dind
-      command: ["--experimental"]
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-    DOCKER_CLI_EXPERIMENTAL: enabled
-    BUILDX_URL: https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64
-  before_script:
-    - mkdir -p $HOME/.docker/cli-plugins/
-    - wget -O $HOME/.docker/cli-plugins/docker-buildx $BUILDX_URL
-    - chmod a+x $HOME/.docker/cli-plugins/docker-buildx
-    - docker buildx version
+image: docker:19.03
+services:
+  - name: docker:19.03-dind
+    command: ["--experimental"]
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_DRIVER: overlay2
+  DOCKER_BUILDKIT: 1
+  DOCKER_CLI_EXPERIMENTAL: enabled
+  BUILDX_URL: https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64
+before_script:
+  - mkdir -p $HOME/.docker/cli-plugins/
+  - wget -O $HOME/.docker/cli-plugins/docker-buildx $BUILDX_URL
+  - chmod a+x $HOME/.docker/cli-plugins/docker-buildx
+  - docker buildx version
 
 stages:
   - build
