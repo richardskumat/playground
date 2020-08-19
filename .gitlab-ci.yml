@@ -24,7 +24,7 @@ build:
     # https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
     - docker build -t $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA .
     - docker images
-    - docker run --rm $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA docker --version
+    - docker run --rm $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA bash --version
 
 push_to_dockerhub:
  stage: push
