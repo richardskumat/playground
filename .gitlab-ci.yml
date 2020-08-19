@@ -4,6 +4,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: "/certs"
   DOCKER_CLI_EXPERIMENTAL: enabled
+  DOCKER_BUILDKIT: 1
 
 services:
   - name: docker:dind
@@ -17,7 +18,6 @@ stages:
 before_script:
   - docker info
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  - mkdir -p /etc/docker/ && cp -a daemon.json /etc/docker
   - mkdir -p ~/.docker && cp -a config.json ~/.docker
   - mkdir -p ~/.docker/cli-plugins && cd ~/.docker/cli-plugins && wget https://github.com/docker/buildx/releases/download/v0.4.1/buildx-v0.4.1.linux-amd64 -O buildx && chmod 0755 buildx
   - docker buildx create --use
