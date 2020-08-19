@@ -22,7 +22,6 @@ stages:
 build:
   stage: build
   script:
-    - docker context create pg
     - docker buildx create --use --driver docker-container --name pg --platform=linux/amd64,linux/386,linux/arm/v7,linux/arm64
     - docker buildx inspect --bootstrap pg
     - docker buildx ls
