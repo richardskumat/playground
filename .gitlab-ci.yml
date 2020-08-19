@@ -1,32 +1,28 @@
-image: docker:stable
-
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_CLI_EXPERIMENTAL: enabled
-  DOCKER_BUILDKIT: 1
-
-services:
-  - name: docker:dind
-    command: ["--experimental"]
+dind:
+  image: docker:19.03
+  services:
+    - name: docker:19.03-dind
+      command: ["--experimental"]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_DRIVER: overlay2
+    DOCKER_BUILDKIT: 1
+    DOCKER_CLI_EXPERIMENTAL: enabled
+    BUILDX_URL: https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64
+  before_script:
+    - mkdir -p $HOME/.docker/cli-plugins/
+    - wget -O $HOME/.docker/cli-plugins/docker-buildx $BUILDX_URL
+    - chmod a+x $HOME/.docker/cli-plugins/docker-buildx
+    - docker buildx version
 
 stages:
   - build
   - push
   - test
 
-before_script:
-  - docker info
-  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  - mkdir -p ~/.docker && cp -a config.json ~/.docker
-  - mkdir -p ~/.docker/cli-plugins && cd ~/.docker/cli-plugins && wget https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -O buildx && chmod 0755 buildx
-  - docker buildx create --use
-
 build:
   stage: build
   script:
-    # https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
-    - export DOCKER_CLI_EXPERIMENTAL=enabled
     - docker buildx create --use
     - docker buildx build --tag $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA  --platform linux/amd64,linux/arm/v7,linux/arm64 .
     - docker images
