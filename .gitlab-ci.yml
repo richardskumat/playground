@@ -22,7 +22,8 @@ stages:
 build:
   stage: build
   script:
-    - docker buildx create --use
+    - docker context create pg
+    - docker buildx create pg --use
     - docker buildx build --tag $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA  --platform linux/amd64,linux/arm/v7,linux/arm64 .
     - docker images
     - docker run --rm $CI_COMMIT_SHORT_SHA:$CI_COMMIT_SHA bash --version
