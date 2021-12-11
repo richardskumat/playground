@@ -27,6 +27,7 @@ stages:
 build:
   stage: build
   script:
-    - docker buildx build --push -t qwe1/playground:latest -t qwe1/playground:$CI_COMMIT_SHORT_SHA -f Dockerfile --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 .
+    # - docker buildx build --push -t qwe1/playground:latest -t qwe1/playground:$CI_COMMIT_SHORT_SHA -f Dockerfile --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 .
+    - docker buildx build --push -t qwe1/playground:latest -t qwe1/playground:$CI_COMMIT_SHORT_SHA -f Dockerfile --platform linux/amd64 .
     - docker images
     - docker run --rm qwe1/playground:latest bash --version
