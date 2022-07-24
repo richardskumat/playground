@@ -25,8 +25,8 @@ before_script:
   - docker context create whatever
   - docker buildx create whatever
   ##
-  - docker buildx create --use --driver docker-container --name pg --platform=linux/amd64,linux/386,linux/arm/v7,linux/arm64
-  - docker buildx inspect --bootstrap pg
+  - docker buildx create --use --driver docker-container --name whatever --platform=linux/amd64,linux/386,linux/arm/v7,linux/arm64
+  - docker buildx inspect --bootstrap whatever
   - docker buildx ls
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
 
