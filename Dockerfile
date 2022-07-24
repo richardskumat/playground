@@ -1,15 +1,5 @@
-FROM debian:bullseye
-ARG DEBIAN_FRONTEND=noninteractive
-RUN sed -i 's/main/main contrib non-free/g' /etc/apt/sources.list \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
-
-RUN apt-get update && \
-    apt-get install -y dhcp-helper && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
-    apt-get clean
-
-RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
-
-VOLUME ["/sys/fs/cgroup"]
-CMD ["/lib/systemd/systemd"]
+# https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038
+FROM alpine:3.16
+RUN apk --no-cache add dhcp-helper
+EXPOSE 67 67/udp
+ENTRYPOINT ["dhcp-helper", "-n"]
