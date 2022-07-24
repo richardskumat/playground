@@ -5,7 +5,7 @@ RUN sed -i 's/main/main contrib non-free/g' /etc/apt/sources.list \
     && apt-get clean
 
 RUN apt-get update && \
-    apt-get install -y python3-minimal sudo bash ca-certificates lsb-release systemd systemd-sysv dbus iproute2 && \
+    apt-get install -y dhcp-helper && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
     apt-get clean
 
