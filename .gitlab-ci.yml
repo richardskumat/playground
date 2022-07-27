@@ -2,6 +2,7 @@ image: qwe1/debdocker:20.10
 services:
   - name: docker:20.10-dind
     command: ["--experimental"]
+
 variables:
   #DOCKER_HOST: tcp://docker:2376
   #DOCKER_TLS_CERTDIR: "/certs"
@@ -11,6 +12,7 @@ variables:
   DOCKER_BUILDKIT: 1
   DOCKER_CLI_EXPERIMENTAL: enabled
   #BUILDX_URL: https://github.com/docker/buildx/releases/download/v0.4.1/buildx-v0.4.1.linux-amd64
+
 before_script:
   - mkdir -p $HOME/.docker/cli-plugins/
   # https://www.thegeekstuff.com/2011/10/grep-or-and-not-operators/
