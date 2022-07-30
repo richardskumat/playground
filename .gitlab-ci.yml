@@ -5,6 +5,7 @@ services:
     command: ["--experimental"]
 
 variables:
+  # for some reason docker on gitlab throws context erros with these enabled
   #DOCKER_HOST: tcp://docker:2376
   #DOCKER_TLS_CERTDIR: "/certs"
   DOCKER_DRIVER: overlay2
