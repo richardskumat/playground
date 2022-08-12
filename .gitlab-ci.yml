@@ -53,5 +53,6 @@ build_raspbian:
     - tar -C /tmp/$RASPBIAN_VERSION -c . | docker import - $RASPBIAN_VERSION
     - docker run --rm $RASPBIAN_VERSION cat /etc/os-release
     - docker run --rm $RASPBIAN_VERSION cat /etc/apt/sources.list
+    - docker run --rm $RASPBIAN_VERSION apt-get update
     - docker images
     - ls -lah
