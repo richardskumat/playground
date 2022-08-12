@@ -43,12 +43,13 @@ build_raspbian:
   image: qwe1/debdocker:latest
   script:
     # https://raspberrypi.stackexchange.com/questions/78232/install-base-raspbian-from-repository-not-using-an-image
-    - apt-get update && apt-get install wget binfmt-support qemu qemu-user-static debootstrap -y
+    - apt-get update && apt-get install wget binfmt-support qemu qemu-user-static debootstrap multistrap -y
     - wget http://archive.raspbian.org/raspbian.public.key -O - | apt-key add -q
     - df -hT
     - mount
     #- qemu-debootstrap --keyring=/etc/apt/trusted.gpg --arch armhf --variant=minbase $RASPBIAN_VERSION $RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
     - debootstrap --include apt --keyring=/etc/apt/trusted.gpg --foreign --arch armhf --variant=minbase $RASPBIAN_VERSION /tmp/$RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
+    - chroot /tmp/$RASPBIAN_VERSION /debootstrap/debootstrap --second-stage
     # https://docs.docker.com/develop/develop-images/baseimages/
     - tar -C /tmp/$RASPBIAN_VERSION -c . | docker import - $RASPBIAN_VERSION
     - docker run --rm $RASPBIAN_VERSION cat /etc/os-release
