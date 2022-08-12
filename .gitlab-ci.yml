@@ -34,8 +34,6 @@ before_script:
   - docker buildx inspect --bootstrap whatever
   - docker buildx ls
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
-  - mkdir -p $RASPBIAN_VERSION
-  - mount -i -o exec,dev $RASPBIAN_VERSION
 
 stages:
   - build
@@ -47,7 +45,8 @@ build_raspbian:
     # https://raspberrypi.stackexchange.com/questions/78232/install-base-raspbian-from-repository-not-using-an-image
     - apt-get update && apt-get install wget binfmt-support qemu qemu-user-static debootstrap -y
     - wget http://archive.raspbian.org/raspbian.public.key -O - | apt-key add -q
-    - qemu-debootstrap --keyring=/etc/apt/trusted.gpg --arch armhf --variant=minbase $RASPBIAN_VERSION $RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
+    #- qemu-debootstrap --keyring=/etc/apt/trusted.gpg --arch armhf --variant=minbase $RASPBIAN_VERSION $RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
+    - debootstrap --keyring=/etc/apt/trusted.gpg --foreign --arch armhf --variant=minbase $RASPBIAN_VERSION $RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
     # https://docs.docker.com/develop/develop-images/baseimages/
     - tar -C $RASPBIAN_VERSION -c . | docker import - $RASPBIAN_VERSION
     - docker run --rm $RASPBIAN_VERSION cat /etc/os-release
