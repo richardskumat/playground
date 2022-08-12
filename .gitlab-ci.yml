@@ -35,7 +35,7 @@ before_script:
   - docker buildx ls
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
   - mkdir -p $RASPBIAN_VERSION
-  - mount -i -o remount,exec,dev $RASPBIAN_VERSION
+  - mount -o exec,dev $RASPBIAN_VERSION
 
 stages:
   - build
