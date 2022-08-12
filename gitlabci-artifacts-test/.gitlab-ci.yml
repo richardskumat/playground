@@ -1,0 +1,29 @@
+---
+# https://stackoverflow.com/questions/38140996/how-can-i-pass-artifacts-to-another-stage
+image: ubuntu:22.04
+
+build:
+  stage: build
+  script:
+    - echo "building..." >> ./result.txt
+  artifacts:
+    paths:
+    - result.txt
+    expire_in: 1 week
+
+unit_test:
+  stage: test
+  script:
+    - ls
+    - cat result.txt
+    - echo "unit testing..." >> ./result.txt
+  artifacts:
+    paths:
+    - result.txt
+    expire_in: 1 week
+
+deploy:
+  stage: deploy
+  script:
+    - ls
+    - cat result.txt
