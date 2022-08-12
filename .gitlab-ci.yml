@@ -48,9 +48,9 @@ build_raspbian:
     - df -hT
     - mount
     #- qemu-debootstrap --keyring=/etc/apt/trusted.gpg --arch armhf --variant=minbase $RASPBIAN_VERSION $RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
-    - debootstrap --keyring=/etc/apt/trusted.gpg --foreign --arch armhf --variant=minbase $RASPBIAN_VERSION $RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
+    - debootstrap --keyring=/etc/apt/trusted.gpg --foreign --arch armhf --variant=minbase $RASPBIAN_VERSION /tmp/$RASPBIAN_VERSION http://mirrordirector.raspbian.org/raspbian/
     # https://docs.docker.com/develop/develop-images/baseimages/
-    - tar -C $RASPBIAN_VERSION -c . | docker import - $RASPBIAN_VERSION
+    - tar -C /tmp/$RASPBIAN_VERSION -c . | docker import - $RASPBIAN_VERSION
     - docker run --rm $RASPBIAN_VERSION cat /etc/os-release
     - docker run --rm $RASPBIAN_VERSION cat /etc/apt/sources.list
     - docker images
